@@ -1,0 +1,64 @@
+[build-system]
+build-backend = "hatchling.build"
+requires      = ["hatchling"]
+
+[project]
+authors = [{ name = "Silvio Knizek", email = "killermoehre@gmx.net" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python",
+]
+dependencies = ["click", "pydanclick", "pydantic", "svg.py", "webcolors"]
+description = 'Create scalable background images with colorful crcles and squares.'
+dynamic = ["version"]
+keywords = []
+license = { file = "LICENSE.md" }
+name = "circle-background"
+readme = "README.md"
+requires-python = ">=3.12"
+
+[project.urls]
+Documentation = "https://github.com/killermoehre/circle-background#readme"
+Issues        = "https://github.com/killermoehre/circle-background/issues"
+Source        = "https://github.com/killermoehre/circle-background"
+
+[project.scripts]
+circle-background = "circle_background.cli:circle_background"
+
+[tool.hatch]
+publish.index.user = "killermoehre"
+
+[tool.hatch.version]
+path = "src/circle_background/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = ["mypy", "pydantic", "pylint", "pylint-pydantic"]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/circle_background tests}"
+
+[tool.coverage.run]
+branch      = true
+omit        = ["src/circle_background/__about__.py"]
+parallel    = true
+source_pkgs = ["circle_background", "tests"]
+
+[tool.coverage.paths]
+circle_background = [
+    "*/circle-background/src/circle_background",
+    "src/circle_background",
+]
+tests = ["*/circle-background/tests", "tests"]
+
+[tool.coverage.report]
+exclude_lines = ["if TYPE_CHECKING:", "if __name__ == .__main__.:", "no cov"]
+
+[tool.ruff]
+indent-width = 4
+
+[tool.mypy]
+plugins             = "pydantic.mypy"
+warn_unused_ignores = true
